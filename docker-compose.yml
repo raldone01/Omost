@@ -16,7 +16,6 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-    tty: True
     ports:
       - "7860:7860"
     volumes:
