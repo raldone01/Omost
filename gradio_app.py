@@ -1,7 +1,14 @@
 import os
 
-os.environ['HF_HOME'] = os.path.join(os.path.dirname(__file__), 'hf_download')
+hf_home_path = os.path.join(os.path.dirname(__file__), 'hf_download')
+os.environ['HF_HOME'] = hf_home_path
 HF_TOKEN = None
+
+# https://bford.info/cachedir/
+# create a CACHEDIR.TAG in hf_home_path to prevent the ai models from being backed up
+if not os.path.exists(os.path.join(hf_home_path, 'CACHEDIR.TAG')):
+    with open(os.path.join(hf_home_path, 'CACHEDIR.TAG'), 'w') as f:
+        f.write('Signature: 8a477f597d28d172789f06886806bc55')
 
 import lib_omost.memory_management as memory_management
 import uuid
@@ -10,6 +17,8 @@ import torch
 import numpy as np
 import gradio as gr
 import tempfile
+
+print("Omost starting up...")
 
 gradio_temp_dir = os.path.join(tempfile.gettempdir(), 'gradio')
 os.makedirs(gradio_temp_dir, exist_ok=True)
@@ -379,4 +388,6 @@ with gr.Blocks(
         ], outputs=[chatInterface.chatbot_state])
 
 if __name__ == "__main__":
+    print('Starting the Gradio server...')
     demo.queue().launch(inbrowser=True, server_name='0.0.0.0')
+    print('Gradio server stopped.')
