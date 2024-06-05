@@ -14,6 +14,9 @@ on:
   pull_request:
     branches:
       - main
+  release:
+    types:
+      - published
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
@@ -62,13 +65,13 @@ jobs:
             ghcr.io/${{ github.repository_owner }}/Omost
           # generate Docker tags based on the following events/attributes
           tags: |
-            type=schedule
-            type=ref,event=branch
-            type=ref,event=pr
-            type=semver,pattern={{version}}
-            type=semver,pattern={{major}}.{{minor}}
-            type=semver,pattern={{major}}
-            type=sha
+            # Tag with branch name
+            type=ref,event=branch,suffix=${{ matrix.suffix }}
+            # Tag with pr-number
+            type=ref,event=pr,suffix=${{ matrix.suffix }}
+            # Tag with git tag on release
+            type=ref,event=tag,suffix=${{ matrix.suffix }}
+            type=raw,value=release,enable=${{ github.event_name == 'release' }},suffix=${{ matrix.suffix }}
 
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v3.0.0
