@@ -59,7 +59,7 @@ jobs:
         with:
           # list of Docker images to use as base name for tags
           images: |
-            ghcr.io/raldone01/app
+            ghcr.io/${{ github.repository_owner }}/Omost
           # generate Docker tags based on the following events/attributes
           tags: |
             type=schedule

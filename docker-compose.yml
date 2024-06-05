@@ -9,7 +9,7 @@ services:
           devices:
             - driver: nvidia
               capabilities: [gpu, utility, compute]
-              count: all
+              count: 1 # Currently omost can only handle one gpu device!!!
     # Uncomment the image line to pull the image from the container registry.
     # Also, comment out the build section.
     #image: ghcr.io/lllyasviel/Omost:latest
